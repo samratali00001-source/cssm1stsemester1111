@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Berachampa College - 1st Semester Sociology Quiz</title>
+    
+    <!-- CSS libraries: FontAwesome Icons & Google Fonts -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- JS Library: Chart.js for Pie Chart Rendering -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- CSS STYLES -->
+    <style>
+        :root {
+            --bg-color: #0b0f19;
+            --card-bg: rgba(22, 31, 49, 0.85);
+            --primary-accent: #6c5ce7;
+            --secondary-accent: #00cec9;
+            --text-color: #f1f2f6;
+            --text-muted: #a4b0be;
+            --success-color: #00b894;
+            --danger-color: #d63031;
+            --border-glow: rgba(108, 92, 231, 0.3);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Hind Siliguri', 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            background-image: 
+                radial-gradient(at 10% 20%, rgba(108, 92, 231, 0.15) 0px, transparent 50%),
+                radial-gradient(at 90% 80%, rgba(0, 206, 201, 0.15) 0px, transparent 50%);
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 12px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .header-left h1 {
+            font-size: 1.1rem;
+            color: #fff;
+            font-weight: 700;
+        }
+
+        .creator-tag {
+            font-size: 0.85rem;
+            color: var(--secondary-accent);
+            font-weight: 600;
+        }
+
+        .header-right {
+            display: flex;
+            gap: 10px;
+        }
+
+        .social-btn {
+            text-decoration: none;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: transform 0.2s;
+        }
+
+        .social-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .whatsapp-btn { background-color: #25D366; }
+        .telegram-btn { background-color: #0088cc; }
+
+        .main-container {
+            flex: 1;
+            max-width: 800px;
+            width: 92%;
+            margin: 20px auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            border-radius: 16px;
+            padding: 24px;
+        }
+
+        .login-screen {
+            text-align: center;
+        }
+
+        .college-title {
+            color: var(--secondary-accent);
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+
+        .subject-title {
+            font-size: 1.6rem;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #fff, var(--secondary-accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .input-group {
+            margin: 20px 0;
+        }
+
+        .input-group input {
+            width: 100%;
+            max-width: 320px;
+            padding: 12px 18px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(0, 0, 0, 0.3);
+            color: #fff;
+            font-size: 1rem;
+            outline: none;
+            text-align: center;
+        }
+
+        .input-group input:focus {
+            border-color: var(--primary-accent);
+            box-shadow: 0 0 10px var(--border-glow);
+        }
+
+        .btn-start {
+            background: linear-gradient(135deg, var(--primary-accent), #8e44ad);
+            color: white;
+            border: none;
+            padding: 12px 36px;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-start:hover {
+            opacity: 0.9;
+            transform: scale(1.02);
+        }
+
+        .level-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .level-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 20px 10px;
+            border-radius: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .level-card:hover {
+            background: rgba(108, 92, 231, 0.2);
+            border-color: var(--primary-accent);
+        }
+
+        .quiz-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--secondary-accent), var(--primary-accent));
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .question-text {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            font-weight: 600;
+            line-height: 1.5;
+        }
+
+        .options-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 14px 18px;
+            border-radius: 8px;
+            color: #fff;
+            text-align: left;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .option-btn:hover:not([disabled]) {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .option-btn.correct {
+            background: rgba(0, 184, 148, 0.3) !important;
+            border-color: var(--success-color) !important;
+            color: #55efc4;
+        }
+
+        .option-btn.wrong {
+            background: rgba(214, 48, 49, 0.3) !important;
+            border-color: var(--danger-color) !important;
+            color: #ff7675;
+        }
+
+        .result-screen {
+            text-align: center;
+        }
+
+        .chart-box {
+            max-width: 240px;
+            margin: 15px auto;
+        }
+
+        .score-info {
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+        }
+
+        .score-info span {
+            color: var(--secondary-accent);
+            font-weight: bold;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER SECTION -->
+    <header>
+        <div class="header-left">
+            <h1>Berachampa College Quiz</h1>
+            <div class="creator-tag">Created by Peter & Suraj</div>
+        </div>
+        <div class="header-right">
+            <a href="https://chat.whatsapp.com/LmDquuB1IGz590DPm0r1vC?s=sh&p=a&mlu=4&ilr=4" target="_blank" class="social-btn whatsapp-btn">
+                <i class="fab fa-whatsapp"></i> WhatsApp
+            </a>
+            <a href="https://t.me/DarkBugBountyHunter" target="_blank" class="social-btn telegram-btn">
+                <i class="fab fa-telegram-plane"></i> Telegram
+            </a>
+        </div>
+    </header>
+
+    <!-- MAIN APP CONTAINER -->
+    <div class="main-container">
+
+        <!-- STEP 1: LOGIN CARD -->
+        <div id="login-card" class="card login-screen">
+            <div class="college-title">Chandraketugarh Sahidullah Smriti Mahavidyalaya</div>
+            <h2 class="subject-title">1st Semester Sociology Quiz</h2>
+            <p style="color: var(--text-muted); margin-bottom: 15px;">তোমার নাম লিখে কুইজ শুরু করো:</p>
+            <div class="input-group">
+                <input type="text" id="user-name" placeholder="তোমার নাম লেখ..." required autocomplete="off">
+            </div>
+            <button class="btn-start" onclick="startApp()">Start Quiz</button>
+        </div>
+
+        <!-- STEP 2: LEVEL SELECTOR CARD -->
+        <div id="level-card" class="card hidden">
+            <h2 style="text-align: center; margin-bottom: 10px;">স্বাগতম, <span id="display-user-name"></span>!</h2>
+            <p style="text-align: center; color: var(--text-muted);">যেকোনো একটি লেভেল নির্বাচন করো (প্রতিটিতে ২০টি প্রশ্ন রয়েছে):</p>
+            <div class="level-grid">
+                <div class="level-card" onclick="selectLevel(1)"><h3>Level 1</h3><p>সহজ</p></div>
+                <div class="level-card" onclick="selectLevel(2)"><h3>Level 2</h3><p>মধ্যম</p></div>
+                <div class="level-card" onclick="selectLevel(3)"><h3>Level 3</h3><p>স্ট্যান্ডার্ড</p></div>
+                <div class="level-card" onclick="selectLevel(4)"><h3>Level 4</h3><p>কঠিন</p></div>
+                <div class="level-card" onclick="selectLevel(5)"><h3>Level 5</h3><p>এডভান্সড</p></div>
+            </div>
+        </div>
+
+        <!-- STEP 3: QUIZ QUESTION CARD -->
+        <div id="quiz-card" class="card hidden">
+            <div class="quiz-header">
+                <span id="level-indicator" style="font-weight: 600; color: var(--secondary-accent);">Level 1</span>
+                <span id="question-count" style="color: var(--text-muted);">Question 1/20</span>
+            </div>
+            <div class="progress-bar-container">
+                <div id="progress-fill" class="progress-fill"></div>
+            </div>
+            <div id="question-text" class="question-text">প্রশ্ন লোড হচ্ছে...</div>
+            <div id="options-grid" class="options-grid"></div>
+        </div>
+
+        <!-- STEP 4: RESULT CARD -->
+        <div id="result-card" class="card result-screen hidden">
+            <h2>লেভেল সম্পন্ন হয়েছে! 🎉</h2>
+            <div class="score-info">
+                মোট সঠিক উত্তর: <span id="correct-count">0</span> / 20<br>
+                পার্সেন্টেজ: <span id="percentage-score">0%</span>
+            </div>
+            <div class="chart-box">
+                <canvas id="resultChart"></canvas>
+            </div>
+            <button class="btn-start" style="margin-top: 15px;" onclick="showLevelSelect()">অন্য লেভেল খেলো</button>
+        </div>
+
+    </div>
+
+    <!-- JAVASCRIPT APP LOGIC -->
+    <script>
+        const quizDatabase = {
+            1: [
+                { q: "১. 'Sociology' (সমাজবিজ্ঞান) শব্দের জনক কে?", options: ["অগাস্ট কোঁৎ (Auguste Comte)", "ইমাইল ডার্কহাইম", "কার্ল মার্কস", "ম্যাক্স ওয়েবার"], ans: 0 },
+                { q: "২. Sociology শব্দটি কোন দুটি ভাষার শব্দ থেকে উৎপন্ন হয়েছে?", options: ["লাতিন ও গ্রিক", "ইংরেজি ও ফরাসি", "গ্রিক ও জার্মান", "লাতিন ও স্প্যানিশ"], ans: 0 },
+                { q: "৩. অগাস্ট কোঁৎ কত সালে 'Sociology' শব্দটি প্রথম ব্যবহার করেন?", options: ["১৮৩৯", "১৮৪৮", "১৯০১", "১৭৮৯"], ans: 0 },
+                { q: "৪. সমাজবিজ্ঞানের মূল আলোচনার বিষয়বস্তু কী?", options: ["মানব সমাজ ও সামাজিক সম্পর্ক", "শুধুমাত্র অর্থনৈতিক লেনদেন", "রাজনৈতিক ক্ষমতা", "অতীতের ইতিহাস"], ans: 0 },
+                { q: "৫. প্রাথমিক গোষ্ঠীর (Primary Group) একটি সেরা উদাহরণ কোনটি?", options: ["পরিবার", "রাজনৈতিক দল", "ট্রেড ইউনিয়ন", "ব্যাংক"], ans: 0 },
+                { q: "৬. 'Human Society' বইটির লেখক কে?", options: ["কিংসল ডেভিস", "ম্যাকিভার", "পারসন্স", "বোটোমোর"], ans: 0 },
+                { q: "৭. নিচের কোনটি সামাজিকীকরণের (Socialization) প্রাথমিক মাধ্যম?", options: ["পরিবার", "বিদ্যালয়", "সংবাদপত্র", "কাজের জায়গা"], ans: 0 },
+                { q: "৮. কার্ল মার্কসের মতে সমাজ পরিবর্তনের প্রধান চালিকাশক্তি কোনটি?", options: ["শ্রেণি সংগ্রাম", "ধর্মীয় চেতনা", "ভৌগোলিক পরিবেশ", "জনসংখ্যা বৃদ্ধি"], ans: 0 },
+                { q: "৯. সমাজবিজ্ঞানকে 'সামাজিক প্রতিষ্ঠানের বিজ্ঞান' কে বলেছেন?", options: ["ইমাইল ডার্কহাইম", "অগাস্ট কোঁৎ", "স্পেনসার", "ওয়েবার"], ans: 0 },
+                { q: "১০. গৌণ গোষ্ঠী (Secondary Group)-এর বৈশিষ্ট্য কোনটি?", options: ["পরোক্ষ ও উদ্দেশ্যভিত্তিক সম্পর্ক", "আমনে-সামনে গভীর আবেগিক সম্পর্ক", "ছোট আকার", "স্থায়ীত্ব"], ans: 0 },
+                { q: "১১. 'Socius' শব্দের অর্থ কী?", options: ["সঙ্গী বা সমাজ", "বিজ্ঞান", "আইন", "ইতিহাস"], ans: 0 },
+                { q: "১২. 'Logos' শব্দের অর্থ কী?", options: ["জ্ঞান বা বিজ্ঞান", "সমাজ", "সমাজসেবা", "সংস্কৃতি"], ans: 0 },
+                { q: "১৩. সমাজে মানুষের আচার-ব্যবহার নিয়ন্ত্রণের অন্যতম উপায় কোনটি?", options: ["সামাজিক নিয়ন্ত্রণ (Social Control)", "ফ্যাশন", "বিনোদন", "ভ্রমণ"], ans: 0 },
+                { q: "১৪. সমাজ কাঠামোর (Social Structure) ক্ষুদ্রতম একক কোনটি?", options: ["ব্যক্তি বা সামাজিক ভূমিকা", "রাষ্ট্র", "আইনসভা", "আন্তর্জাতিক সংস্থা"], ans: 0 },
+                { q: "১৫. 'The Division of Labour in Society' গ্রন্থটি কার লেখা?", options: ["ইমাইল ডার্কহাইম", "কার্ল মার্কস", "কোঁৎ", "ম্যাক্স ওয়েবার"], ans: 0 },
+                { q: "১৬. যে পরিবারে বংশ পরিচয় মায়ের দিক থেকে নির্ধারিত হয় তাকে কী বলে?", options: ["পিতৃতান্ত্রিক পরিবার", "মাতৃতান্ত্রিক পরিবার", "একক পরিবার", "যৌথ পরিবার"], ans: 1 },
+                { q: "১৭. একক পরিবার (Nuclear Family) সাধারণত গঠিত হয় কাদের নিয়ে?", options: ["বাবা, মা ও তাঁদের অবিবাহিত সন্তান", "দাদু, ঠাকুমা ও কাকা-কাখিমা", "তিন প্রজন্মের আত্মীয়স্বজন", "গ্রামের সব মানুষ"], ans: 0 },
+                { q: "১৮. সমাজবিজ্ঞান একটি কী ধরনের বিজ্ঞান?", options: ["সামাজিক বিজ্ঞান", "প্রাকৃতিক বিজ্ঞান", "জৈব বিজ্ঞান", "ভৌত বিজ্ঞান"], ans: 0 },
+                { q: "১৯. সংস্কৃতি (Culture) প্রধানত কয় প্রকার?", options: ["দুই প্রকার (বস্তুগত ও অবস্তুগত)", "চার প্রকার", "পাঁচ প্রকার", "তিন প্রকার"], ans: 0 },
+                { q: "২০. ঘরবাড়ি, আসবাবপত্র, প্রযুক্তি—এগুলি কিসের উদাহরণ?", options: ["বস্তুগত সংস্কৃতি", "অবস্তুগত সংস্কৃতি", "সামাজিক প্রথা", "সামাজিক নিয়ম"], ans: 0 }
+            ],
+            2: [
+                { q: "১. 'Folkways' গ্রন্থটির রচয়িতা কে?", options: ["ডব্লিউ. জি. সামনার", "ম্যাকিভার", "কুলি", "পারসন্স"], ans: 0 },
+                { q: "২. 'In-group' (অন্তর্গোষ্ঠী) এবং 'Out-group' (বহিরগোষ্ঠী) ধারণাটি কে দিয়েছেন?", options: ["সামনার", "সি. এইচ. কুলি", "কোঁৎ", "মার্টিন"], ans: 0 },
+                { q: "৩. 'Primary Group' (প্রাথমিক গোষ্ঠী) ধারণাটি প্রথম কে প্রবর্তন করেন?", options: ["সি. এইচ. কুলি (১৯০৯)", "সামনার", "ওয়েবার", "মার্শাল"], ans: 0 },
+                { q: "৪. 'The Protestant Ethic and the Spirit of Capitalism' বইটির লেখক কে?", options: ["ম্যাক্স ওয়েবার", "কার্ল মার্কস", "ডার্কহাইম", "স্পেনসার"], ans: 0 },
+                { q: "৫. সামাজিক স্তরবিন্যাসের (Social Stratification) প্রধান রূপ কোনটি?", options: ["শ্রেণি ও জাতিভেদ (Class & Caste)", "শুধুমাত্র বয়স", "লিঙ্গভেদ", "শিক্ষা"], ans: 0 },
+                { q: "৬. 'Positive Philosophy' বইটির লেখক কে?", options: ["অগাস্ট কোঁৎ", "মার্কস", "ডার্কহাইম", "অ্যারিস্টটল"], ans: 0 },
+                { q: "৭. অহিংশা, মূল্যবোধ, বিশ্বাস, ঐতিহ্য—এগুলি কিসের উদাহরণ?", options: ["অবস্তুগত সংস্কৃতি", "বস্তুগত সংস্কৃতি", "প্রযুক্তি", "অর্থনৈতিক উপাদান"], ans: 0 },
+                { q: "৮. অগাস্ট কোঁতের 'ত্রিলোক নিয়ম' (Law of Three Stages)-এর প্রথম পর্যায় কোনটি?", options: ["ধর্মীয় পর্যায় (Theological)", "অধিশাস্ত্রীয় পর্যায়", "প্রত্যক্ষবাদী পর্যায়", "বৈজ্ঞানিক পর্যায়"], ans: 0 },
+                { q: "৯. যে বিবাহের মাধ্যমে এক পুরুষ একাধিক নারীকে বিবাহ করতে পারে তাকে কী বলে?", options: ["বহুপত্নীক বিবাহ (Polygyny)", "বহুপতিক বিবাহ", "একপত্নীক বিবাহ", "গোষ্ঠী বিবাহ"], ans: 0 },
+                { q: "১০. সামাজিক গতিশীলতা (Social Mobility) কত প্রকার?", options: ["আনুভূমিক ও উলম্ব (Horizontal & Vertical)", "শুধুমাত্র অর্থনৈতিক", "একমুখী", "কোনোটিই নয়"], ans: 0 },
+                { q: "১১. কার্ল মার্কসের সমাজ তত্ত্বের কেন্দ্রবিন্দু কোনটি?", options: ["ঐতিহাসিক বস্তুবাদ", "আত্মহত্যা তত্ত্ব", "সামাজিক অনৈক্যের তত্ত্ব", "আমলাতন্ত্র তত্ত্ব"], ans: 0 },
+                { q: "১২. 'Suicide' (১৮৯৭) নামক বিখ্যাত গবেষণাগ্রন্থটি কার লেখা?", options: ["ইমাইল ডার্কহাইম", "ম্যাক্স ওয়েবার", "অগাস্ট কোঁৎ", "স্পেনসার"], ans: 0 },
+                { q: "১৩. ডার্কহাইমের মতে 'অ্যানোমি' (Anomie) বলতে কী বোঝায়?", options: ["নিয়মহীনতা বা সামাজিক বিশৃঙ্খলা", "অত্যধিক শৃঙ্খলা", "সামাজিক একতা", "ধর্মীয় নিয়ম"], ans: 0 },
+                { q: "১৪. সমাজবিজ্ঞানের সাথে ইতিহাসের প্রধান সম্পর্ক কী?", options: ["ইতিহাস অতীত সমাজ নিয়ে কাজ করে, সমাজবিজ্ঞান বর্তমান সমাজ নিয়ে", "দুটিই একই বিষয়", "সমাজবিজ্ঞান কেবল যুদ্ধ নিয়ে আলোচনা করে", "কোনো সম্পর্ক নেই"], ans: 0 },
+                { q: "১৫. জাতিভেদ প্রথার (Caste System) প্রধান বৈশিষ্ট্য কোনটি?", options: ["জন্মসূত্রে নির্ধারিত ও আবদ্ধ (Closed Class)", "উন্মুক্ত শ্রেণি", "অর্থের ভিত্তিতে পরিবর্তনশীল", "ইচ্ছাধীন"], ans: 0 },
+                { q: "১৬. 'Mind, Self and Society' বইটির লেখক কে?", options: ["জি. এইচ. মিড", "সি. এইচ. কুলি", "পারসন্স", "ব্লুমার"], ans: 0 },
+                { q: "১৭. সমাজবিজ্ঞানকে জৈব রূপকের (Organic Analogy) সাথে কে তুলনা করেছেন?", options: ["হার্বার্ট স্পেনসার", "কোঁৎ", "ওয়েবার", "মার্কস"], ans: 0 },
+                { q: "১৮. আমলাতন্ত্র (Bureaucracy) তত্ত্বের প্রধান প্রবক্তা কে?", options: ["ম্যাক্স ওয়েবার", "কার্ল মার্কস", "ডার্কহাইম", "টেইলর"], ans: 0 },
+                { q: "১৯. সমাজবিজ্ঞান ও অর্থনীতির যোগসূত্র কোথায়?", options: ["সম্পদ উৎপাদন ও ব্যবহারের সামাজিক প্রভাব পর্যালোচনায়", "ক্যালকুলেশনে", "মুদ্রাস্ফীতির অংকে", "কোনো সম্পর্ক নেই"], ans: 0 },
+                { q: "২০. 'Looking-Glass Self' (আয়নায় প্রতিফলিত আত্মভাবনা) তত্ত্বটি কার?", options: ["সি. এইচ. কুলি", "মিড", "ফ্রয়েড", "পারসন্স"], ans: 0 }
+            ],
+            3: [
+                { q: "১. 'Society: An Introductory Analysis' বইটির রচয়িতা কারা?", options: ["ম্যাকিভার ও পেজ", "বোটোমোর ও গিন্সবার্গ", "পারসন্স ও স্মেলসার", "ডেভিস ও মুর"], ans: 0 },
+                { q: "২. কার্ল মার্কসের শ্রেণি তত্ত্বে প্রধান দুটি শ্রেণি কী কী?", options: ["বুর্জোয়া ও প্রলেতারিয়েত (শোষক ও শোষিত)", "ব্রাহ্মণ ও শূদ্র", "ধনী ও মধ্যবিত্ত", "রাজা ও প্রজা"], ans: 0 },
+                { q: "৩. অগাস্ট কোঁতের 'ত্রিলোক নিয়ম'-এর শেষ পর্যায়টি কী?", options: ["प्रत्यক্ষবাদী বা বৈজ্ঞানিক পর্যায়", "ধর্মীয় পর্যায়", "দার্শনিক পর্যায়", "কাল্পনিক পর্যায়"], ans: 0 },
+                { q: "৪. অর্জিত মর্যাদা (Achieved Status)-এর উদাহরণ কোনটি?", options: ["ডাক্তার বা ইঞ্জিনিয়ার হওয়া", "রাজার ছেলে হওয়া", "কোনো নির্দিষ্ট জাতিতে জন্ম নেওয়া", "পুরুষ বা নারী হওয়া"], ans: 0 },
+                { q: "৫. আরোপিত মর্যাদা (Ascribed Status)-এর উদাহরণ কোনটি?", options: ["জন্মসূত্রে প্রাপ্ত জাতি বা লিঙ্গ", "পরীক্ষায় পাস করা পদবি", "চাকরির পদোন্নতি", "পদ্ধতিগত সাফল্য"], ans: 0 },
+                { q: "৬. 'Social Control' (১৯০১) বইটির লেখক কে?", options: ["ই. এ. রস (E. A. Ross)", "পারসন্স", "কুলি", "ওয়েবার"], ans: 0 },
+                { q: "৭. মেকানিক্যাল সলিডারিটি (Mechanical Solidarity) কোথায় দেখা যায়?", options: ["প্রাচীন বা সরল সমাজে", "আধুনিক শিল্প সমাজে", "মেট্রোপলিটন শহরে", "ডিজিটাল সমাজে"], ans: 0 },
+                { q: "৮. অর্গানিক সলিডারিটি (Organic Solidarity) কিসের ওপর ভিত্তি করে গড়ে ওঠে?", options: ["শ্রমবিভাগ ও পারস্পরিক নির্ভরতা", "একই ধর্মীয় আচার", "রক্তের সম্পর্ক", "অনগ্রসরতা"], ans: 0 },
+                { q: "৯. যে প্রক্রিয়ায় একজন ব্যক্তি অন্য সংস্কৃতির উপাদান গ্রহণ করে নিজের করে নেয় তাকে কী বলে?", options: ["সংস্কৃতিকরণ / আকালচারেশন (Acculturation)", "সামাজিকীকরণ", "বিচ্ছিন্নতা", "বিপ্লব"], ans: 0 },
+                { q: "১০. 'Cultural Lag' (সংস্কৃতিক পশ্চাৎপদতা) তত্ত্বটি কে প্রবর্তন করেন?", options: ["ডব্লিউ. এফ. ওগবার্ন", "সামনার", "স্মেলসার", "ম্যাকিভার"], ans: 0 },
+                { q: "১১. অবস্তুগত সংস্কৃতি যখন বস্তুগত সংস্কৃতির গতিতে এগোতে পারে না, তাকে কী বলে?", options: ["সংস্কৃতিক পশ্চাৎপদতা (Cultural Lag)", "সংস্কৃতিক আগ্রাসন", "সংস্কৃতিক পরিবর্তন", "সংস্কৃতিক বিনিময়"], ans: 0 },
+                { q: "১২. প্রথা (Mores) ও লোকরীতি (Folkways)-এর পার্থক্য প্রথম কে ব্যাখ্যা করেন?", options: ["ডব্লিউ. জি. সামনার", "কুলি", "রস", "পারসন্স"], ans: 0 },
+                { q: "১৩. কোন সমাজবিজ্ঞানী সামাজিক ক্রিয়াকে (Social Action) ৪ ভাগে ভাগ করেছেন?", options: ["ম্যাক্স ওয়েবার", "পারসন্স", "মার্কস", "ডার্কহাইম"], ans: 0 },
+                { q: "১৪. সমাজবিজ্ঞানের সাথে নৃবিজ্ঞানের (Anthropology) মূল পার্থক্য কী?", options: ["নৃবিজ্ঞান প্রধানত প্রাচীন ও ক্ষুদ্র সমাজ নিয়ে আলোচনা করে, সমাজবিজ্ঞান জটিল সমাজ নিয়ে", "কোনো পার্থক্য নেই", "নৃবিজ্ঞান গণিত শেখায়", "সমাজবিজ্ঞান কেবল অতীত নিয়ে ভাবে"], ans: 0 },
+                { q: "১৫. সামাজিক মানদণ্ড (Social Norms) কত প্রকার?", options: ["আনুষ্ঠানিক ও অানুষ্ঠানিক", "এক প্রকার", "দশ প্রকার", "তিন প্রকার"], ans: 0 },
+                { q: "১৬. পরিবারকে 'সামাজিক জীবনের মৌলিক পাঠশালা' কে বলেছেন?", options: ["সি. এইচ. কুলি", "ম্যাকিভার", "ডার্কহাইম", "কোঁৎ"], ans: 0 },
+                { q: "১৭. সমগোত্র বিবাহ নিষিদ্ধ করার নিয়মকে কী বলে?", options: ["বহির্বিবাহ (Exogamy)", "অন্তর্বিবাহ (Endogamy)", "বহুপত্নীক বিবাহ", "একপত্নীক বিবাহ"], ans: 0 },
+                { q: "১৮. নিজের জাত বা গোষ্ঠীর মধ্যে বিবাহ করার নিয়মকে কী বলে?", options: ["অন্তর্বিবাহ (Endogamy)", "বহির্বিবাহ (Exogamy)", "অনুফাস বিবাহ", "বহুপতি বিবাহ"], ans: 0 },
+                { q: "১৯. বহুপতিক বিবাহ (Polyandry) কোথায় দেখা যায়?", options: ["ভারতের তোডা ও তিব্বতি সমাজে", "আধুনিক ইউরোপে", "আমেরিকায়", "জাপানে"], ans: 0 },
+                { q: "২০. 'Das Kapital' গ্রন্থটি কার লেখা?", options: ["কার্ল মার্কস", "ম্যাক্স ওয়েবার", "অগাস্ট কোঁৎ", "ডার্কহাইম"], ans: 0 }
+            ],
+            4: [
+                { q: "১. 'Das Kapital' প্রথম কত সালে প্রকাশিত হয়?", options: ["১৮৬৭", "১৮৪৮", "১৯০১", "১৭৭৬"], ans: 0 },
+                { q: "২. সমাজবিজ্ঞানে 'Ideal Type' (আদর্শ রূপ) ধারণার প্রবক্তা কে?", options: ["ম্যাক্স ওয়েবার", "কার্ল মার্কস", "ইমাইল ডার্কহাইম", "পারসন্স"], ans: 0 },
+                { q: "৩. 'Verstehen' (উপলব্ধিমূলক অনুধাবন) পদ্ধতিটি কে সমাজবিজ্ঞানে ব্যবহার করেন?", options: ["ম্যাক্স ওয়েবার", "কোঁৎ", "স্পেনসার", "ডার্কহাইম"], ans: 0 },
+                { q: "৪. ডার্কহাইমের মতে 'স্বার্থপর আত্মহত্যা' (Egoistic Suicide) কখন ঘটে?", options: ["যখন ব্যক্তি সমাজ থেকে বিচ্ছিন্ন হয়ে পড়ে", "যখন সমাজে সামাজিক একতা খুব বেশি থাকে", "হঠাৎ অর্থনৈতিক সংকটে", "যুদ্ধের সময়"], ans: 0 },
+                { q: "৫. ডার্কহাইমের মতে 'পরার্থপর আত্মহত্যা' (Altruistic Suicide)-এর উদাহরণ কোনটি?", options: ["সতীদাহ প্রথা বা দেশপ্রেমে প্রাণ দেওয়া", "ব্যবসায় ক্ষতির পর আত্মহত্যা", "একাকীত্ব থেকে মৃত্যু", "মানসিক রোগ"], ans: 0 },
+                { q: "৬. 'The Elementary Forms of Religious Life' বইটির লেখক কে?", options: ["ইমাইল ডার্কহাইম", "ম্যাক্স ওয়েবার", "টেইলর", "ফ্রেজার"], ans: 0 },
+                { q: "৭. টোটেমবাদ (Totemism) বলতে প্রধানত কী বোঝায়?", options: ["কোনো প্রাণী বা বস্তুকে পবিত্র গোত্রপ্রতীক মনে করা", "মূর্তি পূজা", "একশ্বেশ্বরবাদ", "বিজ্ঞান চর্চা"], ans: 0 },
+                { q: "৮. সামাজিক কাঠামোর 'কার্যকরী তত্ত্ব' (Functional Theory)-এর বিশিষ্ট সমর্থক কে?", options: ["ট্যালকট পারসন্স ও আর. কে. মার্টন", "কার্ল মার্কস", "লেভি-স্ট্রস", "ওয়েবার"], ans: 0 },
+                { q: "৯. 'Social Theory and Social Structure' বইটির লেখক কে?", options: ["আর. কে. মার্টন (R. K. Merton)", "পারসন্স", "কুলি", "মিলস"], ans: 0 },
+                { q: "১০. প্রকাশিত কাজ ও অপ্রকাশিত সুপ্ত কাজের (Manifest and Latent Functions) ধারণা কে দেন?", options: ["আর. কে. মার্টন", "পারসন্স", "ডার্কহাইম", "মার্কস"], ans: 0 },
+                { q: "১১. 'The Structure of Social Action' (১৯৩৭) গ্রন্থটির রচয়িতা কে?", options: ["ট্যালকট পারসন্স", "ম্যাক্স ওয়েবার", "কোঁৎ", "মার্কস"], ans: 0 },
+                { q: "১২. AGIL মডেল (AGIL Scheme) কে প্রদান করেছিলেন?", options: ["ট্যালকট পারসন্স", "মার্টন", "ওয়েবার", "স্পেনসার"], ans: 0 },
+                { q: "১৩. AGIL মডেলের 'A' অক্ষরের পূর্ণরূপ কী?", options: ["Adaptation (অভিযোজন)", "Action", "Affectivity", "Association"], ans: 0 },
+                { q: "১৪. সমাজবিজ্ঞানের কোন দৃষ্টিভঙ্গি সমাজকে ক্ষমতার দ্বন্দ্বে লিপ্ত হিসেবে দেখে?", options: ["দ্বন্দ্বমূলক দৃষ্টিভঙ্গি (Conflict Perspective)", "কার্যকরী দৃষ্টিভঙ্গি", "প্রতীকী মিথস্ক্রিয়া", "সংগঠনবাদ"], ans: 0 },
+                { q: "১৫. ঐতিহাসিক বস্তুবাদ (Historical Materialism) অনুযায়ী সমাজের ভিত্তি কোনটি?", options: ["অর্থনৈতিক কাঠামো (Infrastructure)", "উপরি কাঠামো (Superstructure)", "ধর্ম", "আইন"], ans: 0 },
+                { q: "১৬. আইন, রাজনীতি, শিক্ষা, সংস্কৃতিকে মার্কসীয় তত্ত্বে কী বলা হয়?", options: ["উপরি কাঠামো (Superstructure)", "ভিত্তি", "উৎপাদন পদ্ধতি", "শ্রেণি আন্দোলন"], ans: 0 },
+                { q: "১৭. 'Alienation' (বিচ্ছিন্নতাবাদ) ধারণাটি কার সমাজতত্ত্বে গুরুত্বপূর্ণ?", options: ["কার্ল মার্কস", "ডার্কহাইম", "ওয়েবার", "পারসন্স"], ans: 0 },
+                { q: "১৮. বিচ্যুত আচরণ (Deviant Behavior) বলতে কী বোঝায়?", options: ["সামাজিক নিয়ম ও মানদণ্ড অমান্য করা", "আইন মেনে চলা", "পড়াশোনা করা", "ধর্ম পালন করা"], ans: 0 },
+                { q: "১৯. 'Gemeinschaft' (সম্প্রদায়) এবং 'Gesellschaft' (সমাজ) ধারণাটি কার?", options: ["ফের্দিনান্দ টেনিস (Ferdinand Tonnies)", "ওয়েবার", "স্পেনসার", "ডার্কহাইম"], ans: 0 },
+                { q: "২০. 'Gemeinschaft' শব্দটির দ্বারা কী ধরনের সমাজকে নির্দেশ করা হয়?", options: ["ঐতিহ্যবাহী গ্রামীণ ঘনিষ্ঠ সম্প্রদায়", "আধুনিক শিল্প নগরী", "আন্তর্জাতিক সংস্থা", "আমলাতান্ত্রিক প্রতিষ্ঠান"], ans: 0 }
+            ],
+            5: [
+                { q: "১. 'The Sociological Imagination' (১৯৫৯) বইটির রচয়িতা কে?", options: ["সি. রাইট মিলস (C. Wright Mills)", "পারসন্স", "মার্টন", "বোটোমোর"], ans: 0 },
+                { q: "২. 'Power Elite' (ক্ষমতাবান অভিজাত) তত্ত্বটি কার?", options: ["সি. রাইট মিলস", "প্যারেটো", "মোস্কা", "মার্কস"], ans: 0 },
+                { q: "৩. অভিজাতদের ঘূর্ণন তত্ত্ব (Circulation of Elites) কে প্রবর্তন করেন?", options: ["ভিলফ্রেডো প্যারেটো", "গ্যারেট মোস্কা", "মিলস", "ওয়েবার"], ans: 0 },
+                { q: "৪. 'The Rules of Sociological Method' (১৮৯৫) বইটি কার লেখা?", options: ["ইমাইল ডার্কহাইম", "অগাস্ট কোঁৎ", "ওয়েবার", "স্পেনসার"], ans: 0 },
+                { q: "৫. ডার্কহাইমের মতে 'সামাজিক তথ্য' (Social Facts)-এর প্রধান বৈশিষ্ট্য কোনটি?", options: ["বাহ্যিকতা ও বাধ্যতামূলক ক্ষমতা (Externality & Coercion)", "সম্পূর্ণ ব্যক্তিগত ইচ্ছা", "জৈবিক বৈশিষ্ট্য", "কাল্পনিক চিন্তা"], ans: 0 },
+                { q: "৬. 'Symbolic Interactionism' (প্রতীকী মিথস্ক্রিয়াবাদ) শব্দটি প্রথম কে ব্যবহার করেন?", options: ["হার্বার্ট ব্লুমার (Herbert Blumer)", "জি. এইচ. মিড", "কুলি", "গোফম্যান"], ans: 0 },
+                { q: "৭. নাট্যমঞ্চ রূপক বা 'Dramaturgical Analysis' তত্ত্বটি কার?", options: ["এরভিং গোফম্যান (Erving Goffman)", "ব্লুমার", "মিড", "গারফিঙ্কেল"], ans: 0 },
+                { q: "৮. 'Ethnomethodology' (জাতিতত্ত্ব বা সাধারণ মানুষের আচরণবিধি) প্রবক্তা কে?", options: ["হ্যা্যারল্ড গারফিঙ্কেল (Harold Garfinkel)", "গোফম্যান", "লুকম্যান", "শুটজ"], ans: 0 },
+                { q: "৯. 'The Social Construction of Reality' বইটির লেখক কারা?", options: ["বার্জার ও লুকম্যান", "গারফিঙ্কেল ও গোফম্যান", "পারসন্স ও মার্টন", "মিলস ও কুলি"], ans: 0 },
+                { q: "১০. পোস্ট-মডার্নিজম বা আধুনিকোত্তর সমাজতত্ত্বে 'Hyperreality' ধারণাটি কার?", options: ["জাঁ বোদ্রিলার (Jean Baudrillard)", "মিশেল ফুকো", "ডেরিডা", "হাবেরমাস"], ans: 0 },
+                { q: "১১. 'Knowledge and Power' (জ্ঞান ও ক্ষমতা) যোগসূত্র নিয়ে কে বিখ্যাত আলোচনা করেছেন?", options: ["মিশেল ফুকো (Michel Foucault)", "বোদ্রিলার", "হাবেরমাস", "জিজেক"], ans: 0 },
+                { q: "১২. 'Communicative Action' (যোগাযোগমূলক ক্রিয়া) তত্ত্বটি কার?", options: ["ইউরগেন হাবেরমাস (Jürgen Habermas)", "ফুকো", "গিন্ডেন্স", "বোরদিউ"], ans: 0 },
+                { q: "১৩. 'Structuration Theory' (কাঠামোকরণ তত্ত্ব) কার লেখা?", options: ["অ্যান্থনি গিডেন্স (Anthony Giddens)", "হাবেরমাস", "বোরদিউ", "পারসন্স"], ans: 0 },
+                { q: "১৪. 'Habitus' এবং 'Cultural Capital' (সাংস্কৃতিক মূলধন) ধারণাটি কার?", options: ["পিয়েরে বোরদিউ (Pierre Bourdieu)", "গিডেন্স", "ফুকো", "মার্টন"], ans: 0 },
+                { q: "১৫. 'Risk Society' (ঝুঁকিপূর্ণ সমাজ) ধারণাটি কার?", options: ["উলরিচ বেক (Ulrich Beck)", "গিডেন্স", "বোদ্রিলার", "কাস্টেলস"], ans: 0 },
+                { q: "১৬. 'The Network Society' (নেটওয়ার্ক সমাজ) তত্ত্বের প্রবক্তা কে?", options: ["ম্যানুয়েল কাস্টেলস (Manuel Castells)", "বেক", "হার্ভে", "গিডেন্স"], ans: 0 },
+                { q: "১৭. ডার্কহাইমের মতে পবিত্র (Sacred) ও অপবিত্র (Profane)-এর পার্থক্য কিসের মূল ভিত্তি?", options: ["ধর্ম (Religion)", "অর্থনীতি", "রাজনীতি", "পরিবার"], ans: 0 },
+                { q: "১৮. সাবঅল্টার্ন (Subaltern) বা নিম্নবর্গের ইতিহাস চর্চার সাথে সম্পর্কিত ভারতীয় সমাজবিজ্ঞানী কে?", options: ["রণজিৎ গুহ / পার্থ চট্টোপাধ্যায়", "এম. এন. শ্রীনিবাস", "জি. এস. ঘুরে", "ডি. পি. মুখার্জি"], ans: 0 },
+                { q: "১৯. ভারতে 'Sanskritization' (সংস্কৃতায়ন) ধারণাটি কে প্রথম ব্যবহার করেন?", options: ["এম. এন. শ্রীনিবাস (M. N. Srinivas)", "জি. এস. ঘুরে", "এস. সি. দুবে", "যোগেন্দ্র সিং"], ans: 0 },
+                { q: "২০. 'Caste and Race in India' বিখ্যাত বইটি কার লেখা?", options: ["জি. এস. ঘুরে (G. S. Ghurye)", "শ্রীনিবাস", "আম্বেদকর", "দেসাই"], ans: 0 }
+            ]
+        };
+
+        let userName = "";
+        let currentLevel = 1;
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let chartInstance = null;
+
+        function startApp() {
+            const nameInput = document.getElementById("user-name").value.trim();
+            if (nameInput === "") {
+                alert("অনুগ্রহ করে তোমার নাম লেখ!");
+                return;
+            }
+            userName = nameInput;
+            document.getElementById("display-user-name").innerText = userName;
+            
+            document.getElementById("login-card").classList.add("hidden");
+            document.getElementById("level-card").classList.remove("hidden");
+        }
+
+        function selectLevel(level) {
+            currentLevel = level;
+            currentQuestionIndex = 0;
+            score = 0;
+
+            document.getElementById("level-card").classList.add("hidden");
+            document.getElementById("result-card").classList.add("hidden");
+            document.getElementById("quiz-card").classList.remove("hidden");
+            
+            document.getElementById("level-indicator").innerText = "Level " + currentLevel;
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            const questions = quizDatabase[currentLevel];
+            const qData = questions[currentQuestionIndex];
+
+            document.getElementById("question-count").innerText = `Question ${currentQuestionIndex + 1}/${questions.length}`;
+            const progressPercent = ((currentQuestionIndex + 1) / questions.length) * 100;
+            document.getElementById("progress-fill").style.width = `${progressPercent}%`;
+
+            document.getElementById("question-text").innerText = qData.q;
+
+            const optionsContainer = document.getElementById("options-grid");
+            optionsContainer.innerHTML = "";
+
+            qData.options.forEach((optionText, index) => {
+                const btn = document.createElement("button");
+                btn.className = "option-btn";
+                btn.innerText = optionText;
+                btn.onclick = () => checkAnswer(index, qData.ans);
+                optionsContainer.appendChild(btn);
+            });
+        }
+
+        function checkAnswer(selectedIndex, correctIndex) {
+            const buttons = document.querySelectorAll(".option-btn");
+            
+            buttons.forEach(btn => btn.disabled = true);
+
+            if (selectedIndex === correctIndex) {
+                buttons[selectedIndex].classList.add("correct");
+                score++;
+            } else {
+                buttons[selectedIndex].classList.add("wrong");
+                buttons[correctIndex].classList.add("correct");
+            }
+
+            setTimeout(() => {
+                currentQuestionIndex++;
+                if (currentQuestionIndex < quizDatabase[currentLevel].length) {
+                    loadQuestion();
+                } else {
+                    showResults();
+                }
+            }, 1500);
+        }
+
+        function showResults() {
+            document.getElementById("quiz-card").classList.add("hidden");
+            document.getElementById("result-card").classList.remove("hidden");
+
+            const total = quizDatabase[currentLevel].length;
+            const wrong = total - score;
+            const percentage = Math.round((score / total) * 100);
+
+            document.getElementById("correct-count").innerText = score;
+            document.getElementById("percentage-score").innerText = percentage + "%";
+
+            const ctx = document.getElementById('resultChart').getContext('2d');
+            
+            if (chartInstance) {
+                chartInstance.destroy();
+            }
+
+            chartInstance = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: ['সঠিক উত্তর', 'ভুল উত্তর'],
+                    datasets: [{
+                        data: [score, wrong],
+                        backgroundColor: ['#00b894', '#d63031'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            labels: { color: '#ffffff' }
+                        }
+                    }
+                }
+            });
+        }
+
+        function showLevelSelect() {
+            document.getElementById("result-card").classList.add("hidden");
+            document.getElementById("level-card").classList.remove("hidden");
+        }
+    </script>
+</body>
+</html>
